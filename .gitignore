@@ -206,14 +206,12 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# --- Project Specific Data ---
-# Do NOT upload the manuals (protects copyright and repo size)
-data/raw/*.pdf
-data/processed/
+# --- AI & Data Fixes ---
+vector_db/*
+!vector_db/.gitkeep
 
-# --- AI & Vector DB ---
-# The local database files are large and auto-generated
-vector_db/
+data/raw/*
+!data/raw/.gitkeep
 chroma_db/
 .ollama/
 

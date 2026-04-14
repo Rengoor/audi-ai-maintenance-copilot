@@ -205,3 +205,24 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# --- Project Specific Data ---
+# Do NOT upload the manuals (protects copyright and repo size)
+data/raw/*.pdf
+data/processed/
+
+# --- AI & Vector DB ---
+# The local database files are large and auto-generated
+vector_db/
+chroma_db/
+.ollama/
+
+# --- macOS/Windows Junk ---
+.DS_Store
+Thumbs.db
+
+# --- Large Files ---
+*.zip
+*.tar.gz
+*.bin
+*.onnx

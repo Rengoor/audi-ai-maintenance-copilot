@@ -21,7 +21,7 @@ def get_multimodal_answer(user_text=None, image_path=None):
     )
     identified_part = vision_res['message']['content']
 
-# 2. Combine for Search Query
+  # 2. Combine for Search Query
   if identified_part and user_text:
     search_query = f"{identified_part}: {user_text}"
   else:
@@ -34,3 +34,26 @@ def get_multimodal_answer(user_text=None, image_path=None):
     
   docs = db.similarity_search(search_query, k=3)
   context = "\n\n".join([d.page_content for d in docs])
+
+  # final Reasoning
+  print("--- 🤖 Generating Technical Answer ---")
+  prompt = f"""
+    You are an Audi Maintenance Expert. 
+    User Question/Part: {search_query}
+    
+    Relevant Technical Manual Snippets:
+    {context}
+    
+    Instruction: Answer the user's request using the manual snippets. 
+    Mention torque specs and page numbers if they appear. 
+    If the context doesn't contain the answer, say you can't find it in this manual.
+    Do not hallucinate any information!
+    """
+    
+  final_res = ollama.generate(model='mistral', prompt=prompt)
+    
+  return {
+        "answer": final_res['response'],
+        "identified_part": identified_part,
+        "sources": docs
+  }

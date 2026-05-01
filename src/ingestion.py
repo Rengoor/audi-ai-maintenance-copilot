@@ -33,3 +33,7 @@ def create_vector_db(chunks):
   )
   print("Vector database created and persisted.")
   return vector_db
+
+# To run it:
+# chunks = process_pdf("manualpath")
+# db = create_vector_db(chunks)

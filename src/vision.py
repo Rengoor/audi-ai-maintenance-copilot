@@ -1,4 +1,5 @@
 import ollama
+import re
 from langchain_community.vectorstores import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -38,22 +39,38 @@ def get_multimodal_answer(user_text=None, image_path=None):
   # final Reasoning
   print("--- 🤖 Generating Technical Answer ---")
   prompt = f"""
-    You are an Audi Maintenance Expert. 
-    User Question/Part: {search_query}
+  You are an Audi Maintenance Expert. 
+  User Question/Part: {search_query}
+  
+  Manual Snippets: {context}
     
-    Relevant Technical Manual Snippets:
-    {context}
+  Instructions:
+  - Use ONLY the provided snippets.
+  - If you mention torque (Nm) or measurements, you MUST include the page number.
+  - If the info is missing, state: "Specific technical data not found in provided manual snippets."
+  - DO NOT HALLUCINATE!
+  """
+  final_res = ollama.generate(model='mistral', prompt=prompt)  
+  answer = final_res['response']
+
+  # SAFETY LOGIC
+  # Scan for technical values that require double-checking
+  safety_keywords = ["Nm", "torque", "tightening", "bar", "psi", "clearance", "bolt"]
+  contains_measurements = any(word.lower() in answer.lower() for word in safety_keywords)
     
-    Instruction: Answer the user's request using the manual snippets. 
-    Mention torque specs and page numbers if they appear. 
-    If the context doesn't contain the answer, say you can't find it in this manual.
-    Do not hallucinate any information!
-    """
-    
-  final_res = ollama.generate(model='mistral', prompt=prompt)
-    
+  safety_disclaimer = ""
+  if contains_measurements:
+    safety_disclaimer = (
+      "\n\n⚠️ **SAFETY CHECK REQUIRED:** This response contains torque specifications or measurements. "
+      "Please cross-reference with the source page numbers cited above before performing work."
+    )
+
+  # Extract unique page numbers for the UI to display cleanly
+  source_pages = list(set([doc.metadata.get("page", "N/A") for doc in docs]))
+
   return {
-        "answer": final_res['response'],
-        "identified_part": identified_part,
-        "sources": docs
+    "answer": answer + safety_disclaimer,
+    "identified_part": identified_part,
+    "sources": docs,
+    "requires_safety_check": contains_measurements # Useful for UI styling (e.g., red border)
   }

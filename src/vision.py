@@ -20,3 +20,17 @@ def get_multimodal_answer(user_text=None, image_path=None):
       }]
     )
     identified_part = vision_res['message']['content']
+
+# 2. Combine for Search Query
+  if identified_part and user_text:
+    search_query = f"{identified_part}: {user_text}"
+  else:
+    search_query = user_text if user_text else identified_part
+
+  # 3. RAG Search
+  print(f"--- 🔍 Searching Manual for your query ---")
+  embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+  db = Chroma(persist_directory=DB_PATH, embedding_function=embeddings)
+    
+  docs = db.similarity_search(search_query, k=3)
+  context = "\n\n".join([d.page_content for d in docs])

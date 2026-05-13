@@ -33,7 +33,7 @@ def get_multimodal_answer(user_text=None, image_path=None):
 
     # 3. RAG Search
     print(f"--- 🔍 Searching Manual for your query ---")
-    embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+    embeddings = get_embedding_model()
     db = Chroma(persist_directory=DB_PATH, embedding_function=embeddings)
 
     docs = db.similarity_search(search_query, k=3)
@@ -66,7 +66,7 @@ def get_multimodal_answer(user_text=None, image_path=None):
     safety_disclaimer = ""
     if contains_measurements:
         safety_disclaimer = (
-            "\n\n⚠️ **SAFETY CHECK REQUIRED:** This response contains torque specifications or measurements. "
+            "\n\n **SAFETY CHECK REQUIRED:** This response contains torque specifications or measurements. "
             "Please cross-reference with the source page numbers cited above before performing work."
         )
 

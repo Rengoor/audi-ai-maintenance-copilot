@@ -1,7 +1,7 @@
 import os
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
+from config import get_db_path, get_embedding_model
 from langchain_community.vectorstores import Chroma
 
 
@@ -25,14 +25,14 @@ def process_pdf(filePath):
     return chunks
 
 
-embeddings = HuggingFaceEmbeddings(model_name="mxbai-embed-large")
+embeddings = get_embedding_model()
 
 
 def create_vector_db(chunks):
     vector_db = Chroma.from_documents(
         documents=chunks,
         embedding=embeddings,
-        persist_directory="../vector_db/audi_chroma_db",
+        persist_directory=get_db_path(),
     )
     print("Vector database created and persisted.")
     return vector_db

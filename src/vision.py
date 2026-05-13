@@ -1,10 +1,10 @@
 import ollama
 import re
 from langchain_community.vectorstores import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from config import get_db_path, get_embedding_model
 
-DB_PATH = "../vector_db/audi_chroma_db"
-EMBEDDING_MODEL = "mxbai-embed-large"
+DB_PATH = get_db_path()
+EMBEDDING_MODEL = get_embedding_model()
 
 
 def get_multimodal_answer(user_text=None, image_path=None):
@@ -33,7 +33,7 @@ def get_multimodal_answer(user_text=None, image_path=None):
 
     # 3. RAG Search
     print(f"--- 🔍 Searching Manual for your query ---")
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+    embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
     db = Chroma(persist_directory=DB_PATH, embedding_function=embeddings)
 
     docs = db.similarity_search(search_query, k=3)

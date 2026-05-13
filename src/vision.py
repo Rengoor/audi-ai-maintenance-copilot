@@ -33,8 +33,7 @@ def get_multimodal_answer(user_text=None, image_path=None):
 
     # 3. RAG Search
     print(f"--- 🔍 Searching Manual for your query ---")
-    embeddings = get_embedding_model()
-    db = Chroma(persist_directory=DB_PATH, embedding_function=embeddings)
+    db = Chroma(persist_directory=DB_PATH, embedding_function=EMBEDDING_MODEL)
 
     docs = db.similarity_search(search_query, k=3)
     context = "\n\n".join([d.page_content for d in docs])

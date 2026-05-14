@@ -39,5 +39,5 @@ def create_vector_db(chunks):
 
 
 # To run it:
-chunks = process_pdf("manualpath")
+chunks = process_pdf("../data/raw/Audi_manual.pdf")
 db = create_vector_db(chunks)

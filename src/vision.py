@@ -1,7 +1,12 @@
 import ollama
 import re
 from langchain_community.vectorstores import Chroma
-from config import get_db_path, get_embedding_model, get_vision_model, get_text_model
+from config import (
+    get_db_path,
+    get_embedding_model,
+    get_vision_model,
+    get_text_model,
+)
 
 DB_PATH = get_db_path()
 EMBEDDING_MODEL = get_embedding_model()

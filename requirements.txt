@@ -5,3 +5,9 @@ chromadb
 pypdf
 sentence-transformers
 streamlit
+langfuse
+logfire[ollama]
+ragas
+nemoguardrails
+pydantic>=2.0.0
+python-dotenv

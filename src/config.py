@@ -1,7 +1,7 @@
 from langchain_ollama import OllamaEmbeddings
 
 # Shared Settings
-DB_PATH = "./vector_db/audi_chroma_db"
+DB_PATH = "../vector_db/audi_chroma_db"
 EMBEDDING_MODEL_NAME = "mxbai-embed-large"
 VISION_MODEL_NAME = "llama3.2-vision"
 TEXT_MODEL_NAME = "mistral"

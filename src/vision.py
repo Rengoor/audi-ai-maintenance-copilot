@@ -1,10 +1,12 @@
 import ollama
 import re
 from langchain_community.vectorstores import Chroma
-from config import get_db_path, get_embedding_model
+from config import get_db_path, get_embedding_model, get_vision_model, get_text_model
 
 DB_PATH = get_db_path()
 EMBEDDING_MODEL = get_embedding_model()
+VISION_MODEL = get_vision_model()
+TEXT_MODEL = get_text_model()
 
 
 def get_multimodal_answer(user_text=None, image_path=None):
@@ -14,7 +16,7 @@ def get_multimodal_answer(user_text=None, image_path=None):
     if image_path:
         print("--- 📸 Processing Image ---")
         vision_res = ollama.chat(
-            model="llama3.2-vision",
+            model=VISION_MODEL,
             messages=[
                 {
                     "role": "user",
@@ -52,7 +54,7 @@ def get_multimodal_answer(user_text=None, image_path=None):
   - If the info is missing, state: "Specific technical data not found in provided manual snippets."
   - DO NOT HALLUCINATE!
   """
-    final_res = ollama.generate(model="mistral", prompt=prompt)
+    final_res = ollama.generate(model=TEXT_MODEL, prompt=prompt)
     answer = final_res["response"]
 
     # SAFETY LOGIC

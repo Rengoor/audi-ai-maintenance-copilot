@@ -39,5 +39,5 @@ def create_vector_db(chunks):
 
 
 # To run it:
-# chunks = process_pdf("manualpath")
-# db = create_vector_db(chunks)
+chunks = process_pdf("manualpath")
+db = create_vector_db(chunks)

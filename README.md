@@ -3,7 +3,7 @@
 **Specialized RAG System for Audi Technical Documentation**
 
 ## 🚗 Overview
-This project is an MVP developed for my 4th-semester project at **TH Ingolstadt**. It leverages **Generative AI** and **Computer Vision** to provide instant maintenance guidance. Users can either type a query or upload a photo of a car component to receive precise instructions extracted from official technical manuals.
+This project is an MVP developed as a personal project at TH Ingolstadt. It leverages Generative AI and Computer Vision to provide instant maintenance guidance. Users can either type a query or upload a photo of a car component to receive precise instructions extracted from official technical manuals.
 
 ### Key Features
 - **Local Multimodal RAG:** Uses Llama 3.2 Vision (via Ollama) for zero-cost image analysis.

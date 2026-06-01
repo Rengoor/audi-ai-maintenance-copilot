@@ -21,6 +21,7 @@ This project is an MVP developed as a passion project of mine and to help a cust
 ## How to use it
 - Fork the repository
 - Run python -m venv .venv
+- Run pip install -r requirements.txt
 - Add a service manual (as not included on the repository for privacy purposes) in data/raw/ and set name to that in ingestion.py
 - Download the ollama models on your system
 - Run ingestion.py

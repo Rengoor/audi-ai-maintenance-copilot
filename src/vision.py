@@ -20,17 +20,33 @@ def get_multimodal_answer(user_text=None, image_path=None):
     identified_part = ""
     if image_path:
         print("--- 📸 Processing Image ---")
-        vision_res = ollama.chat(
-            model=VISION_MODEL,
-            messages=[
-                {
-                    "role": "user",
-                    "content": "Identify this Audi car part. Output only the technical name.",
-                    "images": [image_path],
-                }
-            ],
-        )
-        identified_part = vision_res["message"]["content"]
+        try:
+            from PIL import Image
+            import io
+
+            # Open the image, convert it to RGB mode, and save it to a clean JPEG byte stream
+            with Image.open(image_path) as img:
+                img_rgb = img.convert("RGB")
+                byte_arr = io.BytesIO()
+                img_rgb.save(byte_arr, format="JPEG")
+                image_bytes = byte_arr.getvalue()
+
+            vision_res = ollama.chat(
+                model=VISION_MODEL,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": "Identify this Audi car part. Output only the technical name.",
+                        "images": [image_bytes],
+                    }
+                ],
+            )
+            identified_part = vision_res["message"]["content"]
+            print(f"Successfully identified part: {identified_part}")
+
+        except Exception as e:
+            print(f"Error handling image processing: {e}")
+            identified_part = ""
 
     # 2. Combine for Search Query
     if identified_part and user_text:

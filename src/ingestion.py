@@ -1,6 +1,6 @@
 import os
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from config import get_db_path, get_embedding_model
 from langchain_community.vectorstores import Chroma
 
@@ -39,5 +39,5 @@ def create_vector_db(chunks):
 
 
 # To run it:
-chunks = process_pdf("../data/raw/Audi_manual.pdf")
+chunks = process_pdf("./data/raw/Audi_manual.pdf")
 db = create_vector_db(chunks)

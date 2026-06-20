@@ -1,10 +1,13 @@
 langchain==0.3.0
 langchain-community
+langchain-text-splitters
 langchain-ollama
 chromadb
 pypdf
 sentence-transformers
 streamlit
+langchain-mcp-adapters
+mcp
 langfuse
 logfire[ollama]
 ragas
